@@ -32,6 +32,7 @@
         "./scripts/installs/openssh.ps1",
         "./resources/certs/oracle-cert.cer",
         "./resources/certs/gdig2.crt",
+        "./resources/certs/myCA.crt",
         "./resources/certs/comodorsadomainvalidationsecureserverca.crt",
         "./resources/certs/comodorsacertificationauthority.crt",
         "./resources/certs/addtrust_external_ca.cer",

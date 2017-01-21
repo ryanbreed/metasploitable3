@@ -3,14 +3,14 @@
 
 Vagrant.configure("2") do |config|
   # Base configuration for the VM and provisioner
+  config.vm.provider :libvirt do |libvirt|
+      libvirt.default_prefix = "metasploitable3"
+  end
+
   config.vm.box = "metasploitable3"
   config.vm.hostname = "metasploitable3"
   config.vm.communicator = "winrm"
-
-
-  # Install Chocolatey
-  config.vm.provision :shell, path: "scripts/installs/chocolatey.cmd"
-  config.vm.provision :reload # Hack to reset environment variables
+  # reload # Hack to reset environment variables
 
   # Install BoxStarter
   config.vm.provision :shell, path: "scripts/installs/install_boxstarter.bat"
@@ -39,7 +39,7 @@ Vagrant.configure("2") do |config|
   config.vm.provision :shell, inline: "rm C:\\tmp\\vagrant-shell.bat" # Hack for this bug: https://github.com/mitchellh/vagrant/issues/7614
   config.vm.provision :shell, path: "scripts/chocolatey_installs/tomcat.bat"
   config.vm.provision :shell, inline: "rm C:\\tmp\\vagrant-shell.bat" # Hack for this bug: https://github.com/mitchellh/vagrant/issues/7614
-  config.vm.provision :reload # Hack to reset environment variables
+  #config.vm.provision :reload # Hack to reset environment variables
   config.vm.provision :shell, path: "scripts/installs/setup_apache_struts.bat"
   config.vm.provision :shell, inline: "rm C:\\tmp\\vagrant-shell.bat" # Hack for this bug: https://github.com/mitchellh/vagrant/issues/7614
 
@@ -50,8 +50,8 @@ Vagrant.configure("2") do |config|
   config.vm.provision :shell, inline: "rm C:\\tmp\\vagrant-shell.bat" # Hack for this bug: https://github.com/mitchellh/vagrant/issues/7614
 
   # Vulnerability - Jenkins (1.8)
-  config.vm.provision :shell, path: "scripts/installs/setup_jenkins.bat"
-  config.vm.provision :shell, inline: "rm C:\\tmp\\vagrant-shell.bat" # Hack for this bug: https://github.com/mitchellh/vagrant/issues/7614
+  #config.vm.provision :shell, path: "scripts/installs/setup_jenkins.bat"
+  #config.vm.provision :shell, inline: "rm C:\\tmp\\vagrant-shell.bat" # Hack for this bug: https://github.com/mitchellh/vagrant/issues/7614
 
   # Vulnerability - Wordpress and phpMyAdmin
   # This must run after the WAMP setup.
@@ -88,12 +88,12 @@ Vagrant.configure("2") do |config|
   config.vm.provision :shell, inline: "rm C:\\tmp\\vagrant-shell.bat" # Hack for this bug: https://github.com/mitchellh/vagrant/issues/7614
 
   # Vulnerability - MySQL
-  config.vm.provision :shell, path: "scripts/installs/setup_mysql.bat"
-  config.vm.provision :shell, inline: "rm C:\\tmp\\vagrant-shell.bat" # Hack for this bug: https://github.com/mitchellh/vagrant/issues/7614
+  #config.vm.provision :shell, path: "scripts/installs/setup_mysql.bat"
+  #config.vm.provision :shell, inline: "rm C:\\tmp\\vagrant-shell.bat" # Hack for this bug: https://github.com/mitchellh/vagrant/issues/7614
 
   # Vulnerability - ManageEngine Desktop Central
-  config.vm.provision :shell, path: "scripts/installs/install_manageengine.bat"
-  config.vm.provision :shell, inline: "rm C:\\tmp\\vagrant-shell.bat" # Hack for this bug: https://github.com/mitchellh/vagrant/issues/7614
+  #config.vm.provision :shell, path: "scripts/installs/install_manageengine.bat"
+  #config.vm.provision :shell, inline: "rm C:\\tmp\\vagrant-shell.bat" # Hack for this bug: https://github.com/mitchellh/vagrant/issues/7614
 
   # Vulnerability - Axis2
   # This must run after the Apache Struts setup.
@@ -109,20 +109,20 @@ Vagrant.configure("2") do |config|
   config.vm.provision :shell, inline: "rm C:\\tmp\\vagrant-shell.bat" # Hack for this bug: https://github.com/mitchellh/vagrant/issues/7614
 
   # Configure Firewall to open up vulnerable services
-  case ENV['MS3_DIFFICULTY']
-  when 'easy'
-    config.vm.provision :shell, path: "scripts/configs/disable_firewall.bat"
-  else
-    config.vm.provision :shell, path: "scripts/configs/configure_firewall.bat"
-  end
+  #case ENV['MS3_DIFFICULTY']
+  #when 'easy'
+  #else
+    #config.vm.provision :shell, path: "scripts/configs/configure_firewall.bat"
+  #end
 
+  config.vm.provision :shell, path: "scripts/configs/disable_firewall.bat"
   config.vm.provision :shell, inline: "rm C:\\tmp\\vagrant-shell.bat" # Hack for this bug: https://github.com/mitchellh/vagrant/issues/7614
 
   # Vulnerability - ElasticSearch
   # This must run after the firewall rules, because it needs to make some HTTP requests in order to
   # set up the vulnerable state.
-  config.vm.provision :shell, path: "scripts/installs/install_elasticsearch.bat"
-  config.vm.provision :shell, inline: "rm C:\\tmp\\vagrant-shell.bat" # Hack for this bug: https://github.com/mitchellh/vagrant/issues/7614
+  #config.vm.provision :shell, path: "scripts/installs/install_elasticsearch.bat"
+  #config.vm.provision :shell, inline: "rm C:\\tmp\\vagrant-shell.bat" # Hack for this bug: https://github.com/mitchellh/vagrant/issues/7614
 
   # Configure flags
   config.vm.provision :shell, path: "scripts/installs/install_flags.bat"
